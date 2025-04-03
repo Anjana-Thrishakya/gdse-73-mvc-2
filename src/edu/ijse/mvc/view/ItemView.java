@@ -4,6 +4,7 @@
  */
 package edu.ijse.mvc.view;
 
+import edu.ijse.mvc.controller.ItemController;
 import edu.ijse.mvc.dto.ItemDto;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -15,10 +16,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ItemView extends javax.swing.JFrame {
 
+    private ItemController itemController;
+    
     /**
      * Creates new form ItemView
      */
     public ItemView() {
+        itemController = new ItemController();
         initComponents();
         loadTable();
     }
@@ -262,7 +266,7 @@ public class ItemView extends javax.swing.JFrame {
         tblItem.setModel(dtm);
         
         try {
-            ArrayList<ItemDto> itemDtos = null;
+            ArrayList<ItemDto> itemDtos = itemController.getAll();
             if(itemDtos != null){
                 for (ItemDto itemDto : itemDtos) {
                     Object[] rowData = {itemDto.getCode(), itemDto.getDescription(), itemDto.getPackSize(),
@@ -283,7 +287,7 @@ public class ItemView extends javax.swing.JFrame {
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQoh.getText()));
         try {
-            String resp = null;
+            String resp = itemController.saveItem(dto);
             JOptionPane.showMessageDialog(this, resp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -297,7 +301,7 @@ public class ItemView extends javax.swing.JFrame {
                 Double.parseDouble(txtUnitPrice.getText()),
                 Integer.parseInt(txtQoh.getText()));
         try {
-            String resp = null;
+            String resp = itemController.updateItem(dto);
             JOptionPane.showMessageDialog(this, resp);
         } catch (Exception e) {
             e.printStackTrace();
@@ -320,7 +324,7 @@ public class ItemView extends javax.swing.JFrame {
         String itemCode = (String) tblItem.getValueAt(tblItem.getSelectedRow(), 0);
         
         try {
-            ItemDto dto = null;
+            ItemDto dto = itemController.searchItem(itemCode);
             if(dto != null){
                 txtItemCode.setText(dto.getCode());
                 txtDesc.setText(dto.getDescription());
