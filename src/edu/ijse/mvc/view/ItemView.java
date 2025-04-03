@@ -92,6 +92,11 @@ public class ItemView extends javax.swing.JFrame {
 
         btnDelete.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
         btnDelete.setText("Delete Item");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         tblItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -201,6 +206,10 @@ public class ItemView extends javax.swing.JFrame {
         itemSearch();
     }//GEN-LAST:event_tblItemMouseClicked
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        itemDelete();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -289,6 +298,8 @@ public class ItemView extends javax.swing.JFrame {
         try {
             String resp = itemController.saveItem(dto);
             JOptionPane.showMessageDialog(this, resp);
+            loadTable();
+            clearForm();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -303,6 +314,8 @@ public class ItemView extends javax.swing.JFrame {
         try {
             String resp = itemController.updateItem(dto);
             JOptionPane.showMessageDialog(this, resp);
+            loadTable();
+            clearForm();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -312,8 +325,10 @@ public class ItemView extends javax.swing.JFrame {
     private void itemDelete() {
         String itemCode = txtItemCode.getText();
         try {
-            String resp = null;
+            String resp = itemController.deleteItem(itemCode);
             JOptionPane.showMessageDialog(this, resp);
+            loadTable();
+            clearForm();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -338,5 +353,13 @@ public class ItemView extends javax.swing.JFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
+    }
+    
+    private void clearForm(){
+        txtDesc.setText("");
+        txtItemCode.setText("");
+        txtPack.setText("");
+        txtQoh.setText("");
+        txtUnitPrice.setText("");
     }
 }
