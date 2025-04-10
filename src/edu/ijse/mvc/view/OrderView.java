@@ -8,6 +8,8 @@ import edu.ijse.mvc.controller.CustomerController;
 import edu.ijse.mvc.controller.ItemController;
 import edu.ijse.mvc.dto.CustomerDto;
 import edu.ijse.mvc.dto.ItemDto;
+import edu.ijse.mvc.dto.OrderDetailDto;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +21,7 @@ public class OrderView extends javax.swing.JFrame {
     
     private CustomerController customerController;
     private ItemController itemController;
+    private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
 
     /**
      * Creates new form OrderView
@@ -225,7 +228,7 @@ public class OrderView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchItemActionPerformed
 
     private void btnAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToTableActionPerformed
-        // TODO add your handling code here:
+        addToTable();
     }//GEN-LAST:event_btnAddToTableActionPerformed
 
     private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
@@ -297,4 +300,27 @@ public class OrderView extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
+    private void addToTable() {
+        OrderDetailDto orderDetailDto = new OrderDetailDto(
+                null, 
+                txtItemCode.getText(), 
+                Integer.parseInt(txtQty.getText()), 
+                Integer.parseInt(txtDiscount.getText())
+        );
+        
+        orderDetailDtos.add(orderDetailDto);
+        
+        DefaultTableModel dtm = (DefaultTableModel)tblOrderData.getModel();
+        Object[] rowData = {orderDetailDto.getItemCode(), orderDetailDto.getQty(), orderDetailDto.getDiscount()};
+        dtm.addRow(rowData);
+        clearItem();
+    }
+
+    private void clearItem() {
+        txtItemCode.setText("");
+        txtQty.setText("");
+        txtDiscount.setText("");
+        lblItemData.setText("");
+   }
 }
